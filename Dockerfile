@@ -1,12 +1,14 @@
 #CREDTIS https://github.com/jbeduya/php-db2
-FROM php:7.4-fpm
+FROM php:7.4-apache-buster
 
-RUN apt-get update && apt-get install -y
-RUN apt-get install libldap2-dev libmcrypt-dev -y
-RUN docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/
-RUN docker-php-ext-install ldap
-RUN pecl install mcrypt-1.0.4
-RUN docker-php-ext-enable mcrypt
+RUN apt-get update && apt-get install -y && \
+    apt-get install libldap2-dev libmcrypt-dev -y
+
+RUN docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ && \
+    docker-php-ext-install ldap
+
+RUN pecl install mcrypt-1.0.4 && \
+    docker-php-ext-enable mcrypt
 
 
 ADD resources/clidriver.tar.gz /
