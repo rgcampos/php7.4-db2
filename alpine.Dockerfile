@@ -1,10 +1,13 @@
-#CREDTIS https://github.com/jbeduya/php-db2
-FROM --platform=linux/amd64 php:7.4-apache-buster
+FROM --platform=linux/amd64 php:7.4-alpine3.16
 
-RUN apt-get update && apt-get install -y && \
-    apt-get install libldap2-dev libmcrypt-dev -y
+# RUN apk update && apk upgrade && apk add --no-cache bash bash-doc
+RUN apk update && apk upgrade
+RUN apk add --no-cache openssl-dev libldap openldap-dev libmcrypt-dev gcc ldb-dev autoconf g++ make
 
-RUN docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ && \
+# RUN docker-php-ext-install ldap
+# RUN docker-php-ext-enable ldap
+
+RUN docker-php-ext-configure ldap --with-libdir=lib/ && \
     docker-php-ext-install ldap
 
 RUN pecl install mcrypt-1.0.4 && \
